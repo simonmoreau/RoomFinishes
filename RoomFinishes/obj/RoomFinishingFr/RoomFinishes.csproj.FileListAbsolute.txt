@@ -1,0 +1,15 @@
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\bin\RoomFinishingFr\RoomFinishes.dll.config
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\bin\RoomFinishingFr\RoomFinishes.dll
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\bin\RoomFinishingFr\RoomFinishes.pdb
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishing\FloorsFinishesControl.baml
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishing\RoomsFinishesControl.baml
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishing\FloorsFinishesControl.g.cs
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishing\RoomsFinishesControl.g.cs
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes_MarkupCompile.cache
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.g.resources
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.Resources.en.resources
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.Resources.fr.resources
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.Properties.Resources.resources
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.csproj.GenerateResource.Cache
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.dll
+C:\Users\smoreau\Documents\Travail\Revit Dev\RoomFinishes\RoomFinishes\obj\RoomFinishingFr\RoomFinishes.pdb

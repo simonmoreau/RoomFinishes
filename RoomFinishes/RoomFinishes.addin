@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Room Finishes</Name>
+    <Assembly>RoomFinishes.dll</Assembly>
+    <FullClassName>RoomFinishes.App</FullClassName>
+    <ClientId>8d8b267f-aea6-4f38-a75d-cce93de5e05e</ClientId>
+    <VendorId>BM42</VendorId>
+    <VendorDescription>BIM 42, http://bim42.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>

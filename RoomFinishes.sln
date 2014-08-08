@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomFinishes", "RoomFinishes\RoomFinishes.csproj", "{EC09EFBE-488F-4397-B1BB-B486910D62C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RoomFinishingEn|Any CPU = RoomFinishingEn|Any CPU
+		RoomFinishingFr|Any CPU = RoomFinishingFr|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.Debug|Any CPU.ActiveCfg = RoomFinishingEn|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.Debug|Any CPU.Build.0 = RoomFinishingEn|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.RoomFinishingEn|Any CPU.ActiveCfg = RoomFinishingEn|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.RoomFinishingEn|Any CPU.Build.0 = RoomFinishingEn|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.RoomFinishingFr|Any CPU.ActiveCfg = RoomFinishingFr|Any CPU
+		{EC09EFBE-488F-4397-B1BB-B486910D62C8}.RoomFinishingFr|Any CPU.Build.0 = RoomFinishingFr|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
