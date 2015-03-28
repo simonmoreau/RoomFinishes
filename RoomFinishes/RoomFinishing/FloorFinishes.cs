@@ -89,7 +89,7 @@ namespace RoomFinishes.RoomsFinishes
                             }
                             else
                             {
-                                Parameter tempRoomParam = tempRoom.get_Parameter(userControl.RoomParameter.Definition.Name);
+                                Parameter tempRoomParam = tempRoom.get_Parameter(userControl.RoomParameter.Definition);
                                 height = tempRoomParam.AsDouble();
                             }
 

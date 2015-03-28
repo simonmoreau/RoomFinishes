@@ -42,7 +42,11 @@ namespace RoomFinishes.RoomsFinishes
                 {
                     // checked exception need to show in error messagebox
                     message = errorEx.Message;
-                    tx.RollBack();
+                    if (tx.HasStarted())
+                    {
+                        tx.RollBack();
+                    }
+                    
                     return Autodesk.Revit.UI.Result.Failed;
                 }
                 catch (Exception ex)
@@ -50,7 +54,10 @@ namespace RoomFinishes.RoomsFinishes
                     // unchecked exception cause command failed
                     message = Tools.LangResMan.GetString("roomFinishes_unexpectedError", Tools.Cult) + ex.Message;
                     //Trace.WriteLine(ex.ToString());
-                    tx.RollBack();
+                    if (tx.HasStarted())
+                    {
+                        tx.RollBack();
+                    }
                     return Autodesk.Revit.UI.Result.Failed;
                 }
             }
@@ -106,7 +113,7 @@ namespace RoomFinishes.RoomsFinishes
                         {
                             foreach (Autodesk.Revit.DB.BoundarySegment boundarySegment in boundarySegArr)
                             {
-                                Wall currentWall = Wall.Create(doc, boundarySegment.Curve, newWallType.Id, roomLevelId, height, 0, false, false);
+                                Wall currentWall = Wall.Create(doc, boundarySegment.Curve,newWallType.Id, roomLevelId, height, 0, false, false);
                                 Parameter wallJustification = currentWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
                                 wallJustification.Set(2);
 
