@@ -81,7 +81,7 @@ namespace RoomFinishes.RoomsFinishes
                 WallType newWallType = userControl.DuplicatedWallType;
 
                 //Get all finish properties
-                double height = userControl.BoardHeight * 0.00328084;
+                double height = userControl.BoardHeight;
 
                 //Select Rooms in model
                 IEnumerable<Room> ModelRooms = userControl.SelectedRooms;
