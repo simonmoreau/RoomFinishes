@@ -32,7 +32,7 @@ namespace RoomFinishes
         public static double? GetValueFromString(string text, Units units)
         {
             //Check the string value
-            string heightValueString;
+            string heightValueString = text;
             double lenght;
 
             if (Autodesk.Revit.DB.UnitFormatUtils.TryParse(units, UnitType.UT_Length, heightValueString, out lenght))
