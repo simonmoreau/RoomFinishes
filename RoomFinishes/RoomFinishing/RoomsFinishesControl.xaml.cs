@@ -86,9 +86,9 @@ namespace RoomFinishes.RoomsFinishes
 
         private void Ok_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Tools.GetValueFromString(Height_TextBox.Text) != null)
+            if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
             {
-                _boardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text);
+                _boardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
                 if (WallTypeListBox.SelectedItem != null)
                 {
