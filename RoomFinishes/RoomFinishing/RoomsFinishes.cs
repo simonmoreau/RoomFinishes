@@ -113,7 +113,7 @@ namespace RoomFinishes.RoomsFinishes
                         {
                             foreach (Autodesk.Revit.DB.BoundarySegment boundarySegment in boundarySegArr)
                             {
-                                Wall currentWall = Wall.Create(doc, boundarySegment.Curve,newWallType.Id, roomLevelId, height, 0, false, false);
+                                Wall currentWall = Wall.Create(doc, boundarySegment.GetCurve(),newWallType.Id, roomLevelId, height, 0, false, false);
                                 Parameter wallJustification = currentWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
                                 wallJustification.Set(2);
 

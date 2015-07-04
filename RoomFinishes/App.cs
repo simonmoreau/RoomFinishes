@@ -51,13 +51,15 @@ namespace RoomFinishes
             //Retrive dll path
             string DllPath =  Assembly.GetExecutingAssembly().Location;
 
+            ContextualHelp helpFile = CreateContextualHelp("BIM42Help");
+
             //Add RoomsFinishes Button
             string ButtonText = Tools.LangResMan.GetString("roomFinishes_button_name", Tools.Cult);
             PushButtonData FinishButtonData = new PushButtonData("RoomsFiButton", ButtonText, DllPath, "RoomFinishes.RoomsFinishes.RoomsFinishes");
             FinishButtonData.ToolTip = Tools.LangResMan.GetString("roomFinishes_toolTip", Tools.Cult);
             FinishButtonData.LargeImage = RetriveImage("RoomFinishes.Resources.RoomFinishLarge.png");
             FinishButtonData.Image = RetriveImage("RoomFinishes.Resources.RoomFinishSmall.png");
-            FinishButtonData.SetContextualHelp(CreateContextualHelp("BIM42Help"));
+            FinishButtonData.SetContextualHelp(helpFile);
             //bim42Panel.AddItem(FinishButtonData);
 
             //Add FloorFinishes Button
@@ -66,7 +68,7 @@ namespace RoomFinishes
             floorButtonData.ToolTip = Tools.LangResMan.GetString("floorFinishes_toolTip", Tools.Cult);
             floorButtonData.LargeImage = RetriveImage("RoomFinishes.Resources.FloorFinishesLarge.png");
             floorButtonData.Image = RetriveImage("RoomFinishes.Resources.FloorFinishesSmall.png");
-            floorButtonData.SetContextualHelp(CreateContextualHelp("BIM42Help"));
+            floorButtonData.SetContextualHelp(helpFile);
 
             //Group RoomsFinishes button
             SplitButtonData sbRoomData = new SplitButtonData("splitButton2", "BIM 42");
@@ -101,33 +103,31 @@ namespace RoomFinishes
 
         private static ContextualHelp CreateContextualHelp(string helpFile)
         {
-            string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-#if RMFR
-            //Get the french documentation
-            string HelpName =  helpFile + "Fr.chm";
-#else
-            //Get the english documentation
-            string HelpName = helpFile + "En.chm";
-#endif
 
-            //Retrive the directory or create it
-            DirectoryInfo HelpDirectoryInfo = Directory.CreateDirectory(Path.Combine(dir, "BIM42Documentation"));
-            string HelpPath = Path.Combine(HelpDirectoryInfo.FullName, HelpName);
+            FileInfo dllFileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
 
-            //if the help file does not exist, extract it in the HelpDirectory
-            if (!File.Exists(HelpPath))
+            string helpFilePath = Path.Combine(dllFileInfo.Directory.FullName, "RoomFinishes_Help.html");
+
+            FileInfo helpFileInfo = new FileInfo(helpFilePath);
+            if (helpFileInfo.Exists)
             {
-#if RMFR
-                //Get the french documentation
-                Tools.ExtractRessource("RoomFinishes.Resources.BIM42HelpFr.chm", HelpPath);
-#else
-            //Get the english documentation
-                Tools.ExtractRessource("RoomFinishes.Resources.BIM42HelpEn.chm", HelpPath);
-#endif
-
+                return new ContextualHelp(ContextualHelpType.Url, helpFilePath);
             }
+            else
+            {
+                string dirPath = dllFileInfo.Directory.FullName;
+                //Get the english documentation
+                string HelpName = helpFile;
 
-            return new ContextualHelp(ContextualHelpType.ChmFile, HelpPath);
+                string HelpPath = Path.Combine(dirPath, HelpName);
+
+                //if the help file does not exist, extract it in the HelpDirectory
+                //Extract the english documentation
+
+                Tools.ExtractRessource("RoomFinishes.Resources.BIM42HelpEn.chm", HelpPath);
+
+                return new ContextualHelp(ContextualHelpType.ChmFile, HelpPath);
+            }
         }
     }
 }

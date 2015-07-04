@@ -56,6 +56,7 @@ namespace RoomFinishes.RoomsFinishes
             get { return _selectedRooms; }
         }
 
+        private IEnumerable<WallType> _wallTypes;
         public RoomsFinishesControl(UIDocument UIDoc)
         {
             InitializeComponent();
@@ -74,13 +75,13 @@ namespace RoomFinishes.RoomsFinishes
 
 
             //Select the wall type in the document
-            IEnumerable<WallType> wallTypes = from elem in new FilteredElementCollector(_doc).OfClass(typeof(WallType))
+            _wallTypes = from elem in new FilteredElementCollector(_doc).OfClass(typeof(WallType))
                                               let type = elem as WallType
                                               where type.Kind == WallKind.Basic
                                               select type;
 
             // Bind ArrayList with the ListBox
-            WallTypeListBox.ItemsSource = wallTypes;
+            WallTypeListBox.ItemsSource = _wallTypes;
             WallTypeListBox.SelectedItem = WallTypeListBox.Items[0];
         }
 
@@ -121,8 +122,18 @@ namespace RoomFinishes.RoomsFinishes
         private WallType CreateNewWallType(WallType wallType)
         {
             WallType newWallType;
+            List<string> wallTypesNames = _wallTypes.Select(o => o.Name).ToList();
 
-            newWallType = wallType.Duplicate("newWallTypeName") as WallType;
+            if (!wallTypesNames.Contains("newWallTypeName"))
+            {
+                newWallType = wallType.Duplicate("newWallTypeName") as WallType;
+            }
+            else
+            {
+                newWallType = wallType.Duplicate("newWallTypeName2") as WallType;
+            }
+
+            
 
             CompoundStructure cs = newWallType.GetCompoundStructure();
 
