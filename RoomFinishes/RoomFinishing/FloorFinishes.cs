@@ -35,14 +35,20 @@ namespace RoomFinishes.RoomsFinishes
                 catch (Autodesk.Revit.Exceptions.OperationCanceledException exceptionCanceled)
                 {
                     message = exceptionCanceled.Message;
-                    tx.RollBack();
+                    if (tx.HasStarted())
+                    {
+                        tx.RollBack();
+                    }
                     return Autodesk.Revit.UI.Result.Cancelled;
                 }
                 catch (ErrorMessageException errorEx)
                 {
                     // checked exception need to show in error messagebox
                     message = errorEx.Message;
-                    tx.RollBack();
+                    if (tx.HasStarted())
+                    {
+                        tx.RollBack();
+                    }
                     return Autodesk.Revit.UI.Result.Failed;
                 }
                 catch (Exception ex)
@@ -50,7 +56,10 @@ namespace RoomFinishes.RoomsFinishes
                     // unchecked exception cause command failed
                     message = Tools.LangResMan.GetString("floorFinishes_unexpectedError", Tools.Cult) + ex.Message;
                     //Trace.WriteLine(ex.ToString());
-                    tx.RollBack();
+                    if (tx.HasStarted())
+                    {
+                        tx.RollBack();
+                    }
                     return Autodesk.Revit.UI.Result.Failed;
                 }
             }
@@ -105,7 +114,7 @@ namespace RoomFinishes.RoomsFinishes
                             {
                                 foreach (Autodesk.Revit.DB.BoundarySegment boundSeg in boundarySegments.First())
                                 {
-                                    crvArray.Append(boundSeg.GetCurve());
+                                    crvArray.Append(boundSeg.Curve);
                                 }
 
                                 //Retrive room info
