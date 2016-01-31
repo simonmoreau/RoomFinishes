@@ -29,27 +29,13 @@ namespace RoomFinishes
 #endif
         }
 
-        public static double? GetValueFromString(string text)
+        public static double? GetValueFromString(string text, Units units)
         {
             //Check the string value
-            string heightValueString;
+            string heightValueString = text;
             double lenght;
 
-
-            if (text.Contains(" mm"))
-            {
-                heightValueString = text.Replace(" mm", "");
-            }
-            else if (text.Contains("mm"))
-            {
-                heightValueString = text.Replace("mm", "");
-            }
-            else
-            {
-                heightValueString = text;
-            }
-
-            if (double.TryParse(heightValueString, out lenght))
+            if (Autodesk.Revit.DB.UnitFormatUtils.TryParse(units, UnitType.UT_Length, heightValueString, out lenght))
             {
                 return lenght;
             }
