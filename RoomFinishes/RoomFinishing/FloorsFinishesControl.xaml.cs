@@ -210,5 +210,21 @@ namespace RoomFinishes.RoomsFinishes
             return ModelRooms;
         }
 
+        private void Height_TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
+            {
+                _floorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
+
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, _floorHeight, true, true);
+            }
+            else
+            {
+                TaskDialog.Show(Tools.LangResMan.GetString("roomFinishes_TaskDialogName", Tools.Cult),
+                    Tools.LangResMan.GetString("roomFinishes_heightValueError", Tools.Cult), TaskDialogCommonButtons.Close, TaskDialogResult.Close);
+                this.Activate();
+            }
+        }
+
     }
 }

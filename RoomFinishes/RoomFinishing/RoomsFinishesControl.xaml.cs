@@ -71,7 +71,7 @@ namespace RoomFinishes.RoomsFinishes
             this.selected_rooms_radio.Content = Tools.LangResMan.GetString("roomFinishes_selected_rooms_radio", Tools.Cult);
             this.Cancel_Button.Content = Tools.LangResMan.GetString("roomFinishes_Cancel_Button", Tools.Cult);
             this.Ok_Button.Content = Tools.LangResMan.GetString("roomFinishes_OK_Button", Tools.Cult);
-
+            this.Height_TextBox.Text = "100.0";
 
 
             //Select the wall type in the document
@@ -212,6 +212,22 @@ namespace RoomFinishes.RoomsFinishes
             }
 
             return ModelRooms;
+        }
+
+        private void Height_TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
+            {
+                _boardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
+
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, _boardHeight, true, true);
+            }
+            else
+            {
+                TaskDialog.Show(Tools.LangResMan.GetString("roomFinishes_TaskDialogName", Tools.Cult),
+                    Tools.LangResMan.GetString("roomFinishes_heightValueError", Tools.Cult), TaskDialogCommonButtons.Close, TaskDialogResult.Close);
+                this.Activate();
+            }
         }
 
     }
