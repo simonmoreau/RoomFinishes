@@ -89,7 +89,8 @@ namespace RoomFinishes.RoomsFinishes
                 //Select Rooms in model
                 IEnumerable<Room> ModelRooms = userControl.SelectedRooms;
 
-                List<Wall> addedWalls = new List<Wall>();
+                //List<Wall> addedWalls = new List<Wall>();
+                List<KeyValuePair<Wall, Wall>> addedWalls = new List<KeyValuePair<Wall, Wall>>();
                 IList<ElementId> addedWallsIds = new List<ElementId>();
 
                 //Loop on all rooms to get boundaries
@@ -119,8 +120,11 @@ namespace RoomFinishes.RoomsFinishes
                                 Wall currentWall = Wall.Create(doc, boundarySegment.Curve,newWallType.Id, roomLevelId, height, 0, false, false);
                                 Parameter wallJustification = currentWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
                                 wallJustification.Set(2);
+                                
+                                Wall baseWall = doc.GetElement(boundarySegment.ElementId) as Wall;
 
-                                addedWalls.Add(currentWall);
+
+                                addedWalls.Add(new KeyValuePair<Wall,Wall>(currentWall,baseWall));
                                 addedWallsIds.Add(currentWall.Id);
                             }
                         }
@@ -138,10 +142,16 @@ namespace RoomFinishes.RoomsFinishes
 
                 Wall.ChangeTypeId(doc, addedWallsIds, plinte.Id);
 
-                foreach (Wall addedWall in addedWalls)
+                foreach (KeyValuePair<Wall,Wall> addedWallPair in addedWalls)
                 {
-                    Parameter wallJustification = addedWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
+                    Parameter wallJustification = addedWallPair.Key.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
                     wallJustification.Set(3);
+
+                    //Join both wall
+                    if (userControl.JoinWall)
+                    {
+                        JoinGeometryUtils.JoinGeometry(doc, addedWallPair.Key, addedWallPair.Value);
+                    }
                 }
 
                 doc.Delete(newWallType.Id);

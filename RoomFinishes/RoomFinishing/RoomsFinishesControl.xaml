@@ -22,6 +22,7 @@
             <RowDefinition Height="57" />
             <RowDefinition Height="32" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="32" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
@@ -42,7 +43,11 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+        <DockPanel Grid.Row="3">
+            <CheckBox Name="join_checkbox" IsChecked="True" VerticalAlignment="Center"/>
+            <Label DockPanel.Dock="Left" Content="roomFinishes_joinWalls" Name="join_checkbox_label"/>
+        </DockPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Ok_Button" IsDefault="True" Name="Ok_Button" Click="Ok_Button_Click"/>
             <Button Content="Cancel_Button" IsCancel="True" Name="Cancel_Button" Click="Cancel_Button_Click"/>
         </StackPanel>

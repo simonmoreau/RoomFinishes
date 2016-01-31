@@ -50,6 +50,12 @@ namespace RoomFinishes.RoomsFinishes
             get { return _boardHeight; }
         }
 
+        private bool _joinWall;
+        public bool JoinWall
+        {
+            get { return _joinWall; }
+        }
+
         private IEnumerable<Room> _selectedRooms;
         public IEnumerable<Room> SelectedRooms
         {
@@ -71,6 +77,7 @@ namespace RoomFinishes.RoomsFinishes
             this.selected_rooms_radio.Content = Tools.LangResMan.GetString("roomFinishes_selected_rooms_radio", Tools.Cult);
             this.Cancel_Button.Content = Tools.LangResMan.GetString("roomFinishes_Cancel_Button", Tools.Cult);
             this.Ok_Button.Content = Tools.LangResMan.GetString("roomFinishes_OK_Button", Tools.Cult);
+            this.join_checkbox_label.Content = Tools.LangResMan.GetString("roomFinishes_joinWalls", Tools.Cult);
             this.Height_TextBox.Text = "100.0";
 
 
@@ -89,6 +96,7 @@ namespace RoomFinishes.RoomsFinishes
         {
             if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
             {
+                _joinWall = (bool)join_checkbox.IsChecked;
                 _boardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
                 if (WallTypeListBox.SelectedItem != null)

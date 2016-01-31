@@ -211,4 +211,7 @@ Board</value>
   <data name="floorFinishes_noRoomError" xml:space="preserve">
     <value>There is no room in the current model</value>
   </data>
+  <data name="roomFinishes_joinWalls" xml:space="preserve">
+    <value>Join geometry</value>
+  </data>
 </root>
