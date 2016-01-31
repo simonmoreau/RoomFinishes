@@ -94,7 +94,7 @@ namespace RoomFinishes.RoomsFinishes
                             double height;
                             if (userControl.RoomParameter == null)
                             {
-                                height = userControl.FloorHeight * 0.00328084;
+                                height = userControl.FloorHeight;
                             }
                             else
                             {
