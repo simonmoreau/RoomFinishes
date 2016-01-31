@@ -116,9 +116,9 @@ namespace RoomFinishes.RoomsFinishes
             if (floor_height_radio.IsChecked == true)
             {
                 _roomParameter = null;
-                if (Tools.GetValueFromString(Height_TextBox.Text) != null)
+                if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
                 {
-                    _floorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text);
+                    _floorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
                     if (FloorTypeListBox.SelectedItem != null)
                     {
