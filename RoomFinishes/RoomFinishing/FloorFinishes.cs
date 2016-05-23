@@ -114,7 +114,7 @@ namespace RoomFinishes.RoomsFinishes
                             {
                                 foreach (Autodesk.Revit.DB.BoundarySegment boundSeg in boundarySegments.First())
                                 {
-                                    crvArray.Append(boundSeg.Curve);
+                                    crvArray.Append(boundSeg.GetCurve());
                                 }
 
                                 //Retrive room info

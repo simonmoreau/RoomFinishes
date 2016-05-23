@@ -19,8 +19,13 @@ namespace RoomFinishes.RoomsFinishes
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            UIApplication UIApp = commandData.Application;
             UIDocument UIdoc = commandData.Application.ActiveUIDocument;
             Document doc = UIdoc.Document;
+
+            //Subscribe to the FailuresProcessing Event
+            UIApp.Application.FailuresProcessing += new EventHandler<Autodesk.Revit.DB.Events.FailuresProcessingEventArgs>(FailuresProcessing);
+
 
             using (Transaction tx = new Transaction(doc))
             {
@@ -28,10 +33,11 @@ namespace RoomFinishes.RoomsFinishes
                 {
                     // Add Your Code Here
                     RoomFinish(UIdoc, tx);
+                    //Unsubscribe to the FailuresProcessing Event
+                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
                     // Return Success
                     return Result.Succeeded;
                 }
-
                 catch (Autodesk.Revit.Exceptions.OperationCanceledException exceptionCanceled)
                 {
                     message = exceptionCanceled.Message;
@@ -39,6 +45,8 @@ namespace RoomFinishes.RoomsFinishes
                     {
                         tx.RollBack();
                     }
+                    //Unsubscribe to the FailuresProcessing Event
+                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
                     return Autodesk.Revit.UI.Result.Cancelled;
                 }
                 catch (ErrorMessageException errorEx)
@@ -49,7 +57,8 @@ namespace RoomFinishes.RoomsFinishes
                     {
                         tx.RollBack();
                     }
-                    
+                    //Unsubscribe to the FailuresProcessing Event
+                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
                     return Autodesk.Revit.UI.Result.Failed;
                 }
                 catch (Exception ex)
@@ -61,6 +70,8 @@ namespace RoomFinishes.RoomsFinishes
                     {
                         tx.RollBack();
                     }
+                    //Unsubscribe to the FailuresProcessing Event
+                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
                     return Autodesk.Revit.UI.Result.Failed;
                 }
             }
@@ -79,6 +90,7 @@ namespace RoomFinishes.RoomsFinishes
 
             if (userControl.ShowDialog() == true)
             {
+
                 //Select wall types
                 WallType plinte = userControl.SelectedWallType;
                 WallType newWallType = userControl.DuplicatedWallType;
@@ -117,14 +129,13 @@ namespace RoomFinishes.RoomsFinishes
                         {
                             foreach (Autodesk.Revit.DB.BoundarySegment boundarySegment in boundarySegArr)
                             {
-                                Wall currentWall = Wall.Create(doc, boundarySegment.Curve,newWallType.Id, roomLevelId, height, 0, false, false);
+                                Wall currentWall = Wall.Create(doc, boundarySegment.GetCurve(), newWallType.Id, roomLevelId, height, 0, false, false);
                                 Parameter wallJustification = currentWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
                                 wallJustification.Set(2);
-                                
+
                                 Wall baseWall = doc.GetElement(boundarySegment.ElementId) as Wall;
 
-
-                                addedWalls.Add(new KeyValuePair<Wall,Wall>(currentWall,baseWall));
+                                addedWalls.Add(new KeyValuePair<Wall, Wall>(currentWall, baseWall));
                                 addedWallsIds.Add(currentWall.Id);
                             }
                         }
@@ -142,7 +153,7 @@ namespace RoomFinishes.RoomsFinishes
 
                 Wall.ChangeTypeId(doc, addedWallsIds, plinte.Id);
 
-                foreach (KeyValuePair<Wall,Wall> addedWallPair in addedWalls)
+                foreach (KeyValuePair<Wall, Wall> addedWallPair in addedWalls)
                 {
                     Parameter wallJustification = addedWallPair.Key.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
                     wallJustification.Set(3);
@@ -162,6 +173,40 @@ namespace RoomFinishes.RoomsFinishes
             {
                 tx.RollBack();
             }
+        }
+
+        /// <summary>
+        /// Implements the FailuresProcessing event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FailuresProcessing(object sender, Autodesk.Revit.DB.Events.FailuresProcessingEventArgs e)
+        {
+            FailuresAccessor failuresAccessor = e.GetFailuresAccessor();
+            //failuresAccessor
+            String transactionName = failuresAccessor.GetTransactionName();
+
+            IList<FailureMessageAccessor> failures = failuresAccessor.GetFailureMessages();
+
+            if (failures.Count != 0)
+            {
+                foreach (FailureMessageAccessor f in failures)
+                {
+                    FailureDefinitionId id = f.GetFailureDefinitionId();
+                    
+                    if (id == BuiltInFailures.JoinElementsFailures.CannotJoinElementsError)
+                    {
+                        // only default option being choosen,  not good enough!
+                        //failuresAccessor.DeleteWarning(f);
+                        failuresAccessor.ResolveFailure(f);
+                        //failuresAccessor.
+                        e.SetProcessingResult(FailureProcessingResult.ProceedWithCommit);
+                    }
+
+                    return;
+                }
+            }
+
         }
 
     }

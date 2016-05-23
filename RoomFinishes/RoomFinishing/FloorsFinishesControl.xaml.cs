@@ -73,13 +73,13 @@ namespace RoomFinishes.RoomsFinishes
             this.Cancel_Button.Content = Tools.LangResMan.GetString("roomFinishes_Cancel_Button", Tools.Cult);
             this.Ok_Button.Content = Tools.LangResMan.GetString("roomFinishes_OK_Button", Tools.Cult);
 
-
-
             //Select the floor type in the document
             IEnumerable<FloorType> floorTypes = from elem in new FilteredElementCollector(_doc).OfClass(typeof(FloorType))
                                                let type = elem as FloorType
                                                where type.IsFoundationSlab == false
                                                select type;
+
+            floorTypes = floorTypes.OrderBy(floorType => floorType.Name);
 
             // Bind ArrayList with the ListBox
             FloorTypeListBox.ItemsSource = floorTypes;
@@ -145,7 +145,7 @@ namespace RoomFinishes.RoomsFinishes
 
                 if (FloorTypeListBox.SelectedItem != null)
                 {
-                    //Select wall type for skirting board
+                    //Select floor type
                     _selectedFloorType = FloorTypeListBox.SelectedItem as FloorType;
 
                     this.DialogResult = true;

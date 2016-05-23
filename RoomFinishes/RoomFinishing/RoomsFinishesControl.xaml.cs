@@ -87,6 +87,8 @@ namespace RoomFinishes.RoomsFinishes
                                               where type.Kind == WallKind.Basic
                                               select type;
 
+            _wallTypes = _wallTypes.OrderBy(wallType => wallType.Name);
+
             // Bind ArrayList with the ListBox
             WallTypeListBox.ItemsSource = _wallTypes;
             WallTypeListBox.SelectedItem = WallTypeListBox.Items[0];

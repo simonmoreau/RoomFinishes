@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
       None
@@ -17,7 +17,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RoomFinishes</RootNamespace>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2016\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2017\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -40,13 +40,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2016\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2017\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RoomFinishingEn|AnyCPU'">
     <OutputPath>bin\RoomFinishingEn\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -68,11 +68,11 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
+      <HintPath>$(ProgramW6432)\Autodesk\Revit 2017\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
+      <HintPath>$(ProgramW6432)\Autodesk\Revit 2017\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -171,11 +171,11 @@
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2016\RoomFinishes.dll" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>call "C:\Program Files (x86)\Windows Kits\8.0\bin\x86\signtool.exe" sign /sha1 9ef5d4829ffb9d688f5d13d4efedaa5e30b71c22 /d "$(SolutionName)" /du "http://www.eai.fr" /t "http://timestamp.comodoca.com/authenticode" /fd sha256 "$(TargetPath)"
+    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe" sign /fd SHA256 /du "http://www.eai.fr" /tr "http://timestamp.comodoca.com/authenticode" "$(TargetPath)"
 
-copy "$(ProjectDir)RoomFinishes.addin" "$(AppData)\Autodesk\REVIT\Addins\2016"
-if $(ConfigurationName) == Debug copy "$(ProjectDir)bin\debug\RoomFinishes.dll" "$(AppData)\Autodesk\REVIT\Addins\2016"
-if $(ConfigurationName) == RoomFinishingEn copy "$(ProjectDir)bin\RoomFinishingEn\RoomFinishes.dll" "$(AppData)\Autodesk\REVIT\Addins\2016"
-if $(ConfigurationName) == RoomFinishingFr copy "$(ProjectDir)bin\RoomFinishingFr\RoomFinishes.dll" "$(AppData)\Autodesk\REVIT\Addins\2016"</PostBuildEvent>
+copy "$(ProjectDir)RoomFinishes.addin" "$(AppData)\Autodesk\Revit\Addins\2017"
+if $(ConfigurationName) == Debug copy "$(ProjectDir)bin\debug\RoomFinishes.dll" "$(AppData)\Autodesk\Revit\Addins\2017"
+if $(ConfigurationName) == RoomFinishingEn copy "$(ProjectDir)bin\RoomFinishingEn\RoomFinishes.dll" "$(AppData)\Autodesk\Revit\Addins\2017"
+if $(ConfigurationName) == RoomFinishingFr copy "$(ProjectDir)bin\RoomFinishingFr\RoomFinishes.dll" "$(AppData)\Autodesk\Revit\Addins\2017"</PostBuildEvent>
   </PropertyGroup>
 </Project>
