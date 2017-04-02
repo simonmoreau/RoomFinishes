@@ -97,15 +97,14 @@ namespace RoomFinishes
     {
         public FailureProcessingResult PreprocessFailures(FailuresAccessor failuresAccessor)
         {
-            IList<FailureMessageAccessor> failList = new List<FailureMessageAccessor>();
             // Inside event handler, get all warnings
-            failList = failuresAccessor.GetFailureMessages();
+            IList<FailureMessageAccessor> failList = failuresAccessor.GetFailureMessages();
             foreach (FailureMessageAccessor failure in failList)
             {
                 // check FailureDefinitionIds against ones that you want to dismiss,
-                FailureDefinitionId failID = failure.GetFailureDefinitionId();
+                FailureDefinitionId failId = failure.GetFailureDefinitionId();
                 // prevent Revit from showing Unenclosed room warnings
-                if (failID == BuiltInFailures.OverlapFailures.WallsOverlap)
+                if (failId == BuiltInFailures.OverlapFailures.WallsOverlap)
                 {
                     failuresAccessor.DeleteWarning(failure);
                 }

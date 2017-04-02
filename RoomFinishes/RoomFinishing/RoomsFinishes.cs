@@ -19,12 +19,12 @@ namespace RoomFinishes.RoomsFinishes
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            UIApplication UIApp = commandData.Application;
-            UIDocument UIdoc = commandData.Application.ActiveUIDocument;
-            Document doc = UIdoc.Document;
+            UIApplication uiApp = commandData.Application;
+            UIDocument uiDoc = commandData.Application.ActiveUIDocument;
+            Document doc = uiDoc.Document;
 
             //Subscribe to the FailuresProcessing Event
-            UIApp.Application.FailuresProcessing += new EventHandler<Autodesk.Revit.DB.Events.FailuresProcessingEventArgs>(FailuresProcessing);
+            uiApp.Application.FailuresProcessing += new EventHandler<Autodesk.Revit.DB.Events.FailuresProcessingEventArgs>(FailuresProcessing);
 
 
             using (Transaction tx = new Transaction(doc))
@@ -32,9 +32,9 @@ namespace RoomFinishes.RoomsFinishes
                 try
                 {
                     // Add Your Code Here
-                    RoomFinish(UIdoc, tx);
+                    RoomFinish(uiDoc, tx);
                     //Unsubscribe to the FailuresProcessing Event
-                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
+                    uiApp.Application.FailuresProcessing -= FailuresProcessing;
                     // Return Success
                     return Result.Succeeded;
                 }
@@ -46,7 +46,7 @@ namespace RoomFinishes.RoomsFinishes
                         tx.RollBack();
                     }
                     //Unsubscribe to the FailuresProcessing Event
-                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
+                    uiApp.Application.FailuresProcessing -= FailuresProcessing;
                     return Autodesk.Revit.UI.Result.Cancelled;
                 }
                 catch (ErrorMessageException errorEx)
@@ -58,7 +58,7 @@ namespace RoomFinishes.RoomsFinishes
                         tx.RollBack();
                     }
                     //Unsubscribe to the FailuresProcessing Event
-                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
+                    uiApp.Application.FailuresProcessing -= FailuresProcessing;
                     return Autodesk.Revit.UI.Result.Failed;
                 }
                 catch (Exception ex)
@@ -71,21 +71,21 @@ namespace RoomFinishes.RoomsFinishes
                         tx.RollBack();
                     }
                     //Unsubscribe to the FailuresProcessing Event
-                    UIApp.Application.FailuresProcessing -= FailuresProcessing;
+                    uiApp.Application.FailuresProcessing -= FailuresProcessing;
                     return Autodesk.Revit.UI.Result.Failed;
                 }
             }
         }
 
 
-        void RoomFinish(UIDocument UIDoc, Transaction tx)
+        void RoomFinish(UIDocument uiDoc, Transaction tx)
         {
-            Document doc = UIDoc.Document;
+            Document doc = uiDoc.Document;
 
             tx.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
 
             //Load the selection form
-            RoomsFinishesControl userControl = new RoomsFinishesControl(UIDoc);
+            RoomsFinishesControl userControl = new RoomsFinishesControl(uiDoc);
             userControl.InitializeComponent();
 
             if (userControl.ShowDialog() == true)
@@ -99,14 +99,13 @@ namespace RoomFinishes.RoomsFinishes
                 double height = userControl.BoardHeight;
 
                 //Select Rooms in model
-                IEnumerable<Room> ModelRooms = userControl.SelectedRooms;
+                IEnumerable<Room> modelRooms = userControl.SelectedRooms;
 
-                //List<Wall> addedWalls = new List<Wall>();
+                Dictionary<ElementId,ElementId> skirtingDictionary = new Dictionary<ElementId, ElementId>();
                 List<KeyValuePair<Wall, Wall>> addedWalls = new List<KeyValuePair<Wall, Wall>>();
-                IList<ElementId> addedWallsIds = new List<ElementId>();
 
                 //Loop on all rooms to get boundaries
-                foreach (Room currentRoom in ModelRooms)
+                foreach (Room currentRoom in modelRooms)
                 {
                     ElementId roomLevelId = currentRoom.LevelId;
 
@@ -129,14 +128,22 @@ namespace RoomFinishes.RoomsFinishes
                         {
                             foreach (Autodesk.Revit.DB.BoundarySegment boundarySegment in boundarySegArr)
                             {
-                                Wall currentWall = Wall.Create(doc, boundarySegment.GetCurve(), newWallType.Id, roomLevelId, height, 0, false, false);
-                                Parameter wallJustification = currentWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
-                                wallJustification.Set(2);
+                                //Check if the boundary is a room separation lines
+                                Element boundaryElement = doc.GetElement(boundarySegment.ElementId);
 
-                                Wall baseWall = doc.GetElement(boundarySegment.ElementId) as Wall;
+                                if (boundaryElement == null) { continue; }
+                                
+                                Categories categories = doc.Settings.Categories;
+                                Category RoomSeparetionLineCat = categories.get_Item(BuiltInCategory.OST_RoomSeparationLines);
 
-                                addedWalls.Add(new KeyValuePair<Wall, Wall>(currentWall, baseWall));
-                                addedWallsIds.Add(currentWall.Id);
+                                if (boundaryElement.Category.Id != RoomSeparetionLineCat.Id)
+                                {
+                                    Wall currentWall = Wall.Create(doc, boundarySegment.GetCurve(), newWallType.Id, roomLevelId, height, 0, false, false);
+                                    Parameter wallJustification = currentWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
+                                    wallJustification.Set(2);
+
+                                    skirtingDictionary.Add(currentWall.Id, boundarySegment.ElementId);
+                                }
                             }
                         }
                     }
@@ -151,17 +158,35 @@ namespace RoomFinishes.RoomsFinishes
 
                 tx.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
 
-                Wall.ChangeTypeId(doc, addedWallsIds, plinte.Id);
-
-                foreach (KeyValuePair<Wall, Wall> addedWallPair in addedWalls)
+                List<ElementId> addedIds = new List<ElementId>(skirtingDictionary.Keys);
+                foreach (ElementId addedSkirtingId in addedIds)
                 {
-                    Parameter wallJustification = addedWallPair.Key.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
-                    wallJustification.Set(3);
-
-                    //Join both wall
-                    if (userControl.JoinWall)
+                    if (doc.GetElement(addedSkirtingId) == null)
                     {
-                        JoinGeometryUtils.JoinGeometry(doc, addedWallPair.Key, addedWallPair.Value);
+                        skirtingDictionary.Remove(addedSkirtingId);
+                    }
+                }
+
+                Wall.ChangeTypeId(doc, skirtingDictionary.Keys, plinte.Id);
+
+                //Join both wall
+                if (userControl.JoinWall)
+                {
+                    foreach (ElementId skirtingId in skirtingDictionary.Keys)
+                    {
+                        Wall skirtingWall = doc.GetElement(skirtingId) as Wall;
+
+                        if (skirtingWall != null)
+                        {
+                            Parameter wallJustification = skirtingWall.get_Parameter(BuiltInParameter.WALL_KEY_REF_PARAM);
+                            wallJustification.Set(3);
+                            Wall baseWall = doc.GetElement(skirtingDictionary[skirtingId]) as Wall;
+
+                            if (baseWall != null)
+                            {
+                                JoinGeometryUtils.JoinGeometry(doc, skirtingWall, baseWall);
+                            }
+                        }
                     }
                 }
 
