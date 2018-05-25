@@ -17,7 +17,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RoomFinishes</RootNamespace>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramW6432)\Autodesk\Revit Preview Release\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2019\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -40,7 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramW6432)\Autodesk\Revit Preview Release\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2019\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RoomFinishingEn|AnyCPU'">
@@ -69,11 +69,11 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
-      <HintPath>$(ProgramW6432)\Autodesk\Revit Preview Release\RevitAPI.dll</HintPath>
+      <HintPath>$(ProgramW6432)\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>$(ProgramW6432)\Autodesk\Revit Preview Release\RevitAPIUI.dll</HintPath>
+      <HintPath>$(ProgramW6432)\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -172,11 +172,8 @@
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2016\RoomFinishes.dll" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe" sign /fd SHA256 /du "http://www.eai.fr" /tr "http://timestamp.comodoca.com/authenticode" "$(TargetPath)"
-
-copy "$(ProjectDir)RoomFinishes.addin" "$(AppData)\Autodesk\Revit\Addins\2018"
-if $(ConfigurationName) == Debug copy "$(ProjectDir)bin\debug\RoomFinishes.dll" "$(AppData)\Autodesk\Revit\Addins\2018"
-if $(ConfigurationName) == RoomFinishingEn copy "$(ProjectDir)bin\RoomFinishingEn\RoomFinishes.dll" "$(AppData)\Autodesk\Revit\Addins\2018"
-if $(ConfigurationName) == RoomFinishingFr copy "$(ProjectDir)bin\RoomFinishingFr\RoomFinishes.dll" "$(AppData)\Autodesk\Revit\Addins\2018"</PostBuildEvent>
+    <PostBuildEvent>set SolutionName=Align
+set SigntoolPath="C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\signtool.exe"
+call %25SigntoolPath%25 sign /sha1 3b428f7d77548f2f10a204bd551da1c3ede7c0e7 /d "%25SolutioName%25" /du "http://www.eai.fr" /t "http://timestamp.comodoca.com/authenticode" /fd sha256 "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
