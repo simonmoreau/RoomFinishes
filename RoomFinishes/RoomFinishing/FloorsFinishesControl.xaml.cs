@@ -18,11 +18,10 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.DB.Architecture;
 using System.Globalization;
 using System.Resources;
-using RoomFinishes;
 #endregion
 
 
-namespace RoomFinishes.RoomsFinishes
+namespace RoomFinishes.RoomFinishing
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml

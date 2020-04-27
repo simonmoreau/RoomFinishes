@@ -22,7 +22,7 @@ using RoomFinishes;
 #endregion
 
 
-namespace RoomFinishes.RoomsFinishes
+namespace RoomFinishes.RoomFinishing
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
@@ -32,42 +32,14 @@ namespace RoomFinishes.RoomsFinishes
         private Document _doc;
         private UIDocument _UIDoc;
 
-        private WallType _selectedWallType;
-        public WallType SelectedWallType
-        {
-            get { return _selectedWallType; }
-        }
-
-        private WallType _duplicatedWallType;
-        public WallType DuplicatedWallType
-        {
-            get { return _duplicatedWallType; }
-        }
-
-        private double _boardHeight;
-        public double BoardHeight
-        {
-            get { return _boardHeight; }
-        }
-
-        private bool _joinWall;
-        public bool JoinWall
-        {
-            get { return _joinWall; }
-        }
-
-        private IEnumerable<Room> _selectedRooms;
-        public IEnumerable<Room> SelectedRooms
-        {
-            get { return _selectedRooms; }
-        }
-
         private IEnumerable<WallType> _wallTypes;
-        public RoomsFinishesControl(UIDocument UIDoc)
+        public readonly SkirtingBoardSetup SkirtingBoardSetup;
+        public RoomsFinishesControl(UIDocument UIDoc, SkirtingBoardSetup skirtingBoardSetup)
         {
             InitializeComponent();
             _doc = UIDoc.Document;
             _UIDoc = UIDoc;
+            SkirtingBoardSetup = skirtingBoardSetup;
 
             //Fill out Text in form
             this.Title = Tools.LangResMan.GetString("roomFinishes_TaskDialogName", Tools.Cult);
@@ -98,21 +70,19 @@ namespace RoomFinishes.RoomsFinishes
         {
             if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
             {
-                _joinWall = (bool)join_checkbox.IsChecked;
-                _boardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
+                SkirtingBoardSetup.JoinWall = (bool)join_checkbox.IsChecked;
+                SkirtingBoardSetup.BoardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
                 if (WallTypeListBox.SelectedItem != null)
                 {
                     //Select wall type for skirting board
-                    _selectedWallType = WallTypeListBox.SelectedItem as WallType;
-                    //Duplicate and double thickness of the wall type
-                    _duplicatedWallType = CreateNewWallType(_selectedWallType);
+                    SkirtingBoardSetup.SelectedWallType = WallTypeListBox.SelectedItem as WallType;
 
                     this.DialogResult = true;
                     this.Close();
 
                     //Select the rooms
-                    _selectedRooms = SelectRooms();
+                    SkirtingBoardSetup.SelectedRooms = SelectRooms().ToList();
                 }
             }
             else
@@ -127,54 +97,6 @@ namespace RoomFinishes.RoomsFinishes
         {
             this.DialogResult = false;
             this.Close();
-        }
-
-        private WallType CreateNewWallType(WallType wallType)
-        {
-            WallType newWallType;
-            List<string> wallTypesNames = _wallTypes.Select(o => o.Name).ToList();
-
-            if (!wallTypesNames.Contains("newWallTypeName"))
-            {
-                newWallType = wallType.Duplicate("newWallTypeName") as WallType;
-            }
-            else
-            {
-                newWallType = wallType.Duplicate("newWallTypeName2") as WallType;
-            }
-
-            
-
-            CompoundStructure cs = newWallType.GetCompoundStructure();
-
-            IList<CompoundStructureLayer> layers = cs.GetLayers();
-            int layerIndex = 0;
-
-            foreach (CompoundStructureLayer csl in layers)
-            {
-                double layerWidth = csl.Width * 2;
-                if (cs.GetRegionsAssociatedToLayer(layerIndex).Count == 1)
-                {
-                    try
-                    {
-                        cs.SetLayerWidth(layerIndex, layerWidth);
-                    }
-                    catch
-                    {
-                        throw new ErrorMessageException(Tools.LangResMan.GetString("roomFinishes_verticallyCompoundError", Tools.Cult));
-                    }
-                }
-                else
-                {
-                    throw new ErrorMessageException(Tools.LangResMan.GetString("roomFinishes_verticallyCompoundError", Tools.Cult));
-                }
-
-                layerIndex++;
-            }
-
-            newWallType.SetCompoundStructure(cs);
-
-            return newWallType;
         }
 
         private IEnumerable<Room> SelectRooms()
@@ -228,9 +150,9 @@ namespace RoomFinishes.RoomsFinishes
         {
             if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
             {
-                _boardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
+                SkirtingBoardSetup.BoardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
-                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, _boardHeight, true, true);
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, SkirtingBoardSetup.BoardHeight, true, true);
             }
             else
             {

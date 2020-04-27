@@ -323,7 +323,7 @@ namespace RoomFinishes.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating boundary finishes.
+        ///   Looks up a localized string similar to Create skirting board.
         /// </summary>
         internal static string roomFinishes_transactionName {
             get {

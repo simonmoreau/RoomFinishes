@@ -12,8 +12,8 @@ namespace RoomFinishes
     class Tools
     {
         //Define cultureInfo
-        public static ResourceManager LangResMan;    // declare Resource manager to access to specific cultureinfo
-        public static CultureInfo Cult;            // declare culture info
+        public static ResourceManager LangResMan = new System.Resources.ResourceManager("RoomFinishes.Resources.en", System.Reflection.Assembly.GetExecutingAssembly());   // declare Resource manager to access to specific cultureinfo
+        public static CultureInfo Cult = CultureInfo.CreateSpecificCulture("en");         // declare culture info
 
         public static void GetLocalisationValues()
         {

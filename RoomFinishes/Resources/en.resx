@@ -152,7 +152,7 @@ Board</value>
     <value>Create skirting boards</value>
   </data>
   <data name="roomFinishes_transactionName" xml:space="preserve">
-    <value>Creating boundary finishes</value>
+    <value>Create skirting board</value>
   </data>
   <data name="roomFinishes_unexpectedError" xml:space="preserve">
     <value>Command is failed for unexpected reason.</value>

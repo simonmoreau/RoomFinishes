@@ -112,6 +112,7 @@
       <DependentUpon>FloorsFinishesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RoomFinishing\FloorFinishes.cs" />
+    <Compile Include="RoomFinishing\Models.cs" />
     <Compile Include="RoomFinishing\RoomsFinishes.cs" />
     <Compile Include="RoomFinishing\RoomsFinishesControl.xaml.cs">
       <DependentUpon>RoomsFinishesControl.xaml</DependentUpon>

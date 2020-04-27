@@ -12,7 +12,7 @@ using System.Resources;
 using RoomFinishes;
 #endregion
 
-namespace RoomFinishes.RoomsFinishes
+namespace RoomFinishes.RoomFinishing
 {
     [Transaction(TransactionMode.Manual)]
     class FloorFinishes : IExternalCommand
