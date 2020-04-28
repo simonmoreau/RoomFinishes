@@ -31,35 +31,14 @@ namespace RoomFinishes
         private Document _doc;
         private UIDocument _UIDoc;
 
-        private FloorType _selectedFloorType;
-        public FloorType SelectedFloorType
-        {
-            get { return _selectedFloorType; }
-        }
+        public readonly FloorsFinishesSetup FloorsFinishesSetup;
 
-        private double _floorHeight;
-        public double FloorHeight
-        {
-            get { return _floorHeight; }
-        }
-
-        private IEnumerable<Room> _selectedRooms;
-        public IEnumerable<Room> SelectedRooms
-        {
-            get { return _selectedRooms; }
-        }
-
-        private Parameter _roomParameter;
-        public Parameter RoomParameter
-        {
-            get { return _roomParameter; }
-        }
-
-        public FloorsFinishesControl(UIDocument UIDoc)
+        public FloorsFinishesControl(UIDocument UIDoc, FloorsFinishesSetup floorsFinishesSetup)
         {
             InitializeComponent();
             _doc = UIDoc.Document;
             _UIDoc = UIDoc;
+            FloorsFinishesSetup = floorsFinishesSetup;
 
             //Fill out Text in form
             this.Title = Tools.LangResMan.GetString("floorFinishes_TaskDialogName", Tools.Cult);
@@ -114,21 +93,21 @@ namespace RoomFinishes
         {
             if (floor_height_radio.IsChecked == true)
             {
-                _roomParameter = null;
+                FloorsFinishesSetup.RoomParameter = null;
                 if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
                 {
-                    _floorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
+                    FloorsFinishesSetup.FloorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
                     if (FloorTypeListBox.SelectedItem != null)
                     {
                         //Select wall type for skirting board
-                        _selectedFloorType = FloorTypeListBox.SelectedItem as FloorType;
+                        FloorsFinishesSetup.SelectedFloorType = FloorTypeListBox.SelectedItem as FloorType;
 
                         this.DialogResult = true;
                         this.Close();
 
                         //Select the rooms
-                        _selectedRooms = SelectRooms();
+                        FloorsFinishesSetup.SelectedRooms = SelectRooms().ToList();
                     }
                 }
                 else
@@ -140,18 +119,18 @@ namespace RoomFinishes
             }
             else
             {
-                _roomParameter = paramSelector.SelectedItem as Parameter;
+                FloorsFinishesSetup.RoomParameter = paramSelector.SelectedItem as Parameter;
 
                 if (FloorTypeListBox.SelectedItem != null)
                 {
                     //Select floor type
-                    _selectedFloorType = FloorTypeListBox.SelectedItem as FloorType;
+                    FloorsFinishesSetup.SelectedFloorType = FloorTypeListBox.SelectedItem as FloorType;
 
                     this.DialogResult = true;
                     this.Close();
 
                     //Select the rooms
-                    _selectedRooms = SelectRooms();
+                    FloorsFinishesSetup.SelectedRooms = SelectRooms().ToList();
                 }
             }
         }
@@ -213,9 +192,9 @@ namespace RoomFinishes
         {
             if (Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits()) != null)
             {
-                _floorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
+                FloorsFinishesSetup.FloorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
-                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, _floorHeight, true, true);
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, FloorsFinishesSetup.FloorHeight, true, true);
             }
             else
             {

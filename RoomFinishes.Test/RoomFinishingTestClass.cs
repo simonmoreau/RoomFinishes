@@ -7,7 +7,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using NUnit.Framework;
 using System.Linq;
-
+using Autodesk.Revit.DB.Architecture;
 
 namespace RoomFinishes.Test
 {
@@ -83,6 +83,75 @@ namespace RoomFinishes.Test
             using (Transaction tx = new Transaction(document))
             {
                 skirtingBoard.CreateSkirtingBoard(document, tx, skirtingBoardSetup);
+            }
+        }
+
+        [Test]
+        public void CreateFloorWithHeight()
+        {
+            int[] roomsIds = new int[] { 201348, 201351, 201408, 201411, 201433, 201436, 201439, 202008 };
+            int floorTypeId = 226;
+
+            RoomFinishes.FloorFinishing floorFinishing = new FloorFinishing();
+            RoomFinishes.FloorsFinishesSetup floorsFinishesSetup = new FloorsFinishesSetup();
+
+            floorsFinishesSetup.FloorHeight = 100;
+
+            //Select the wall type in the document
+            IEnumerable<FloorType> floorTypes = from elem in new FilteredElementCollector(document).OfClass(typeof(FloorType))
+                                              let type = elem as FloorType
+                                                where type.Id == new ElementId(floorTypeId)
+                                              select type;
+
+            floorsFinishesSetup.SelectedFloorType = floorTypes.FirstOrDefault();
+
+            floorsFinishesSetup.SelectedRooms = roomsIds.Select(roomId => document.GetElement(new ElementId(roomId)) as Autodesk.Revit.DB.Architecture.Room).ToList();
+
+            using (Transaction tx = new Transaction(document))
+            {
+                floorFinishing.CreateFloors(document, floorsFinishesSetup, tx);
+            }
+        }
+
+        [Test]
+        public void CreateFloorWithParameter()
+        {
+            int[] roomsIds = new int[] { 202166, 202168, 202171, 202173 };
+            int floorTypeId = 226;
+            int parameterId = 202349;
+
+            RoomFinishes.FloorFinishing floorFinishing = new FloorFinishing();
+            RoomFinishes.FloorsFinishesSetup floorsFinishesSetup = new FloorsFinishesSetup();
+
+            //Find a room
+            IList<Element> roomList = new FilteredElementCollector(document).OfCategory(BuiltInCategory.OST_Rooms).ToList();
+
+            if (roomList.Count != 0)
+            {
+                //Get all double parameters
+                Room room = roomList.First() as Room;
+
+                List<Parameter> doubleParam = (from Parameter p in room.Parameters
+                                               where p.Id == new ElementId(parameterId)
+                                               select p).ToList();
+
+                floorsFinishesSetup.RoomParameter = doubleParam.FirstOrDefault();
+            }
+
+
+            //Select the wall type in the document
+            IEnumerable<FloorType> floorTypes = from elem in new FilteredElementCollector(document).OfClass(typeof(FloorType))
+                                                let type = elem as FloorType
+                                                where type.Id == new ElementId(floorTypeId)
+                                                select type;
+
+            floorsFinishesSetup.SelectedFloorType = floorTypes.FirstOrDefault();
+
+            floorsFinishesSetup.SelectedRooms = roomsIds.Select(roomId => document.GetElement(new ElementId(roomId)) as Autodesk.Revit.DB.Architecture.Room).ToList();
+
+            using (Transaction tx = new Transaction(document))
+            {
+                floorFinishing.CreateFloors(document, floorsFinishesSetup, tx);
             }
         }
 

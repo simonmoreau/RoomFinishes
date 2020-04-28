@@ -180,8 +180,8 @@ set ReleasePath="G:\My Drive\05 - Travail\Revit Dev\RoomFinishes\Release\Current
 set ReleaseZip="G:\My Drive\05 - Travail\Revit Dev\RoomFinishes\Release\Current\RoomFinishes.zip"
 if exist %25ReleasePath%25 7z a -tzip %25ReleaseZip%25 "$(TargetPath)" "$(SolutionDir)RoomFinishes\RoomFinishes.addin"
 
-set version = 1
-:: set versions=2018 2019 2020 2021
+:: set version = 1
+set versions=2018 2019 2020 2021
 
     for %25%25f in (%25versions%25) do (
     if exist "$(AppData)\Autodesk\REVIT\Addins\%25%25f" copy "$(ProjectDir)*.addin" "$(AppData)\Autodesk\REVIT\Addins\%25%25f"

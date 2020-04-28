@@ -33,16 +33,21 @@ namespace RoomFinishes
                     {
                         txg.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
 
-                        tx.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
+                        
 
                         // Add Your Code Here
                         RoomFinish(uiDoc, tx);
 
-                        tx.Commit();
+                        if (tx.GetStatus() == TransactionStatus.RolledBack)
+                        {
+                            txg.RollBack();
+                        }
+                        else
+                        {
+                            txg.Assimilate();
+                        }
 
-                        txg.Assimilate();
-
-
+                        
                         //Unsubscribe to the FailuresProcessing Event
                         uiApp.Application.FailuresProcessing -= FailuresProcessing;
                         // Return Success
@@ -104,12 +109,17 @@ namespace RoomFinishes
             }
             else
             {
-                tx.RollBack();
+                if (tx.HasStarted())
+                {
+                    tx.RollBack();
+                }
             }
         }
 
         public void CreateSkirtingBoard(Document doc, Transaction tx, SkirtingBoardSetup skirtingBoardSetup)
         {
+            tx.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
+
             WallType duplicatedWallType = DuplicateWallType(skirtingBoardSetup.SelectedWallType, doc);
             Dictionary<ElementId, ElementId> skirtingDictionary = CreateWalls(doc, skirtingBoardSetup.SelectedRooms, skirtingBoardSetup.BoardHeight, duplicatedWallType);
 
@@ -119,27 +129,35 @@ namespace RoomFinishes
             // Now, showing of any eventual mini-warnings will be postponed until the following transaction.
             tx.Commit(options);
 
-            tx.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
+            TransactionStatus transactionStatus = tx.GetStatus();
 
-
-            List<ElementId> addedIds = new List<ElementId>(skirtingDictionary.Keys);
-            foreach (ElementId addedSkirtingId in addedIds)
+            if (transactionStatus != TransactionStatus.RolledBack)
             {
-                if (doc.GetElement(addedSkirtingId) == null)
+                tx.Start(Tools.LangResMan.GetString("roomFinishes_transactionName", Tools.Cult));
+
+
+                List<ElementId> addedIds = new List<ElementId>(skirtingDictionary.Keys);
+                foreach (ElementId addedSkirtingId in addedIds)
                 {
-                    skirtingDictionary.Remove(addedSkirtingId);
+                    if (doc.GetElement(addedSkirtingId) == null)
+                    {
+                        skirtingDictionary.Remove(addedSkirtingId);
+                    }
                 }
+
+                Element.ChangeTypeId(doc, skirtingDictionary.Keys, skirtingBoardSetup.SelectedWallType.Id);
+
+                //Join both wall
+                if (skirtingBoardSetup.JoinWall)
+                {
+                    JoinGeometry(doc, skirtingDictionary);
+                }
+
+                doc.Delete(duplicatedWallType.Id);
+
+                tx.Commit();
             }
 
-            Element.ChangeTypeId(doc, skirtingDictionary.Keys, skirtingBoardSetup.SelectedWallType.Id);
-
-            //Join both wall
-            if (skirtingBoardSetup.JoinWall)
-            {
-                JoinGeometry(doc, skirtingDictionary);
-            }
-
-            doc.Delete(duplicatedWallType.Id);
         }
 
         private void JoinGeometry(Document doc, Dictionary<ElementId, ElementId> skirtingDictionary)

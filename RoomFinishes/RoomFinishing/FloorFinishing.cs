@@ -15,7 +15,7 @@ using RoomFinishes;
 namespace RoomFinishes
 {
     [Transaction(TransactionMode.Manual)]
-    class FloorFinishing : IExternalCommand
+    public class FloorFinishing : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -67,83 +67,86 @@ namespace RoomFinishes
 
         void FloorFinish(UIDocument UIDoc, Transaction tx)
         {
-            Document _doc = UIDoc.Document;
+            Document document = UIDoc.Document;
 
-            tx.Start(Tools.LangResMan.GetString("floorFinishes_transactionName", Tools.Cult));
+            FloorsFinishesSetup floorsFinishesSetup = new FloorsFinishesSetup();
+            
 
             //Load the selection form
 
-            FloorsFinishesControl userControl = new FloorsFinishesControl(UIDoc);
-            userControl.InitializeComponent();
+            FloorsFinishesControl floorsFinishesControl = new FloorsFinishesControl(UIDoc, floorsFinishesSetup);
+            floorsFinishesControl.InitializeComponent();
 
-            if (userControl.ShowDialog() == true)
+            if (floorsFinishesControl.ShowDialog() == true)
             {
-                //Select floor types
-                FloorType flType = userControl.SelectedFloorType;
-
-                //Select Rooms in model
-                IEnumerable<Room> ModelRooms = userControl.SelectedRooms;
-
-                foreach (Room tempRoom in ModelRooms)
-                {
-                    if (tempRoom != null)
-                    {
-                        if (tempRoom.UnboundedHeight != 0)
-                        {
-                            //Get all finish properties
-                            double height;
-                            if (userControl.RoomParameter == null)
-                            {
-                                height = userControl.FloorHeight;
-                            }
-                            else
-                            {
-                                Parameter tempRoomParam = tempRoom.get_Parameter(userControl.RoomParameter.Definition);
-                                height = tempRoomParam.AsDouble();
-                            }
-
-                            string name = tempRoom.Name;
-
-                            SpatialElementBoundaryOptions opt = new SpatialElementBoundaryOptions();
-
-                            IList<IList<Autodesk.Revit.DB.BoundarySegment>> boundarySegments = tempRoom.GetBoundarySegments(opt);
-
-                            CurveArray crvArray = new CurveArray();
-
-                            if (boundarySegments.Count != 0)
-                            {
-                                foreach (Autodesk.Revit.DB.BoundarySegment boundSeg in boundarySegments.First())
-                                {
-                                    crvArray.Append(boundSeg.GetCurve());
-                                }
-
-                                //Retrive room info
-                                Level rmLevel = _doc.GetElement(tempRoom.LevelId) as Level;
-                                Parameter param = tempRoom.get_Parameter(BuiltInParameter.ROOM_HEIGHT);
-                                double rmHeight = param.AsDouble();
-
-                                if (crvArray.Size != 0)
-                                {
-                                    System.Threading.Thread.Sleep(1000);
-                                    Floor floor = _doc.Create.NewFloor(crvArray, flType, rmLevel, false);
-
-                                    //Change some param on the floor
-                                    param = floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);
-                                    param.Set(height);
-                                }
-                            }
-                        }
-                    }
-
-                }
-				
-
-                tx.Commit();
+                CreateFloors(document, floorsFinishesSetup, tx);
             }
             else
             {
-                tx.RollBack();
+                if (tx.HasStarted())
+                {
+                    tx.RollBack();
+                }
             }
+        }
+
+        public void CreateFloors(Document document, FloorsFinishesSetup floorsFinishesSetup, Transaction tx)
+        {
+            tx.Start(Tools.LangResMan.GetString("floorFinishes_transactionName", Tools.Cult));
+
+            foreach (Room room in floorsFinishesSetup.SelectedRooms)
+            {
+                if (room != null)
+                {
+                    if (room.UnboundedHeight != 0)
+                    {
+                        //Get all finish properties
+                        double height;
+                        if (floorsFinishesSetup.RoomParameter == null)
+                        {
+                            height = floorsFinishesSetup.FloorHeight;
+                        }
+                        else
+                        {
+                            Parameter roomParameter = room.get_Parameter(floorsFinishesSetup.RoomParameter.Definition);
+                            height = roomParameter.AsDouble();
+                        }
+
+                        SpatialElementBoundaryOptions opt = new SpatialElementBoundaryOptions();
+                        
+
+                        IList<IList<Autodesk.Revit.DB.BoundarySegment>> boundarySegments = room.GetBoundarySegments(opt);
+
+                        CurveArray curveArray = new CurveArray();
+
+                        if (boundarySegments.Count != 0)
+                        {
+                            foreach (Autodesk.Revit.DB.BoundarySegment boundSeg in boundarySegments.First())
+                            {
+                                curveArray.Append(boundSeg.GetCurve());
+                            }
+
+
+                            //Retrive room info
+                            Level rmLevel = document.GetElement(room.LevelId) as Level;
+                            Parameter param = room.get_Parameter(BuiltInParameter.ROOM_HEIGHT);
+                            double rmHeight = param.AsDouble();
+
+                            if (curveArray.Size != 0)
+                            {
+                                Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
+
+                                //Change some param on the floor
+                                param = floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);
+                                param.Set(height);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            tx.Commit();
         }
     }
 }
