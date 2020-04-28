@@ -22,19 +22,19 @@ using RoomFinishes;
 #endregion
 
 
-namespace RoomFinishes.RoomFinishing
+namespace RoomFinishes
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class RoomsFinishesControl : Window
+    public partial class SkirtingBoardControl : Window
     {
         private Document _doc;
         private UIDocument _UIDoc;
 
         private IEnumerable<WallType> _wallTypes;
         public readonly SkirtingBoardSetup SkirtingBoardSetup;
-        public RoomsFinishesControl(UIDocument UIDoc, SkirtingBoardSetup skirtingBoardSetup)
+        public SkirtingBoardControl(UIDocument UIDoc, SkirtingBoardSetup skirtingBoardSetup)
         {
             InitializeComponent();
             _doc = UIDoc.Document;

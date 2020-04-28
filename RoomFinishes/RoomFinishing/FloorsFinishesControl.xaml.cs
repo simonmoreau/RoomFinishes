@@ -21,7 +21,7 @@ using System.Resources;
 #endregion
 
 
-namespace RoomFinishes.RoomFinishing
+namespace RoomFinishes
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml

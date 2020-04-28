@@ -6,12 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoomFinishes.RoomFinishing
+namespace RoomFinishes
 {
     public class SkirtingBoardSetup
     {
         public WallType SelectedWallType { get; set; }
-        public WallType DuplicatedWallType { get; set; }
         public double BoardHeight { get; set; }
         public bool JoinWall { get; set; }
         public List<Room> SelectedRooms { get; set; }

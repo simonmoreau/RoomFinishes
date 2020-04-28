@@ -11,10 +11,10 @@ using System.Globalization;
 using System.Resources;
 #endregion
 
-namespace RoomFinishes.RoomFinishing
+namespace RoomFinishes
 {
     [Transaction(TransactionMode.Manual)]
-    public class RoomsFinishes : IExternalCommand
+    public class SkirtingBoard : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -95,7 +95,7 @@ namespace RoomFinishes.RoomFinishing
             SkirtingBoardSetup skirtingBoardSetup = new SkirtingBoardSetup();
 
             //Load the selection form
-            RoomsFinishesControl userControl = new RoomsFinishesControl(uiDoc, skirtingBoardSetup);
+            SkirtingBoardControl userControl = new SkirtingBoardControl(uiDoc, skirtingBoardSetup);
             userControl.InitializeComponent();
 
             if (userControl.ShowDialog() == true)
@@ -108,7 +108,7 @@ namespace RoomFinishes.RoomFinishing
             }
         }
 
-        private void CreateSkirtingBoard(Document doc, Transaction tx, SkirtingBoardSetup skirtingBoardSetup)
+        public void CreateSkirtingBoard(Document doc, Transaction tx, SkirtingBoardSetup skirtingBoardSetup)
         {
             WallType duplicatedWallType = DuplicateWallType(skirtingBoardSetup.SelectedWallType, doc);
             Dictionary<ElementId, ElementId> skirtingDictionary = CreateWalls(doc, skirtingBoardSetup.SelectedRooms, skirtingBoardSetup.BoardHeight, duplicatedWallType);

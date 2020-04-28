@@ -12,10 +12,10 @@ using System.Resources;
 using RoomFinishes;
 #endregion
 
-namespace RoomFinishes.RoomFinishing
+namespace RoomFinishes
 {
     [Transaction(TransactionMode.Manual)]
-    class FloorFinishes : IExternalCommand
+    class FloorFinishing : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
