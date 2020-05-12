@@ -55,7 +55,7 @@ namespace RoomFinishes
 
             //Add RoomsFinishes Button
             string ButtonText = Tools.LangResMan.GetString("roomFinishes_button_name", Tools.Cult);
-            PushButtonData FinishButtonData = new PushButtonData("RoomsFiButton", ButtonText, DllPath, "RoomFinishes.RoomsFinishes.RoomsFinishes");
+            PushButtonData FinishButtonData = new PushButtonData("RoomsFiButton", ButtonText, DllPath, "RoomFinishes.SkirtingBoard");
             FinishButtonData.ToolTip = Tools.LangResMan.GetString("roomFinishes_toolTip", Tools.Cult);
             FinishButtonData.LargeImage = RetriveImage("RoomFinishes.Resources.RoomFinishLarge.png");
             FinishButtonData.Image = RetriveImage("RoomFinishes.Resources.RoomFinishSmall.png");
@@ -64,7 +64,7 @@ namespace RoomFinishes
 
             //Add FloorFinishes Button
             string floorButtonText = Tools.LangResMan.GetString("floorFinishes_ribbon_panel_name", Tools.Cult);
-            PushButtonData floorButtonData = new PushButtonData("FloorFiButton", floorButtonText, DllPath, "RoomFinishes.RoomsFinishes.FloorFinishes");
+            PushButtonData floorButtonData = new PushButtonData("FloorFiButton", floorButtonText, DllPath, "RoomFinishes.FloorFinishing");
             floorButtonData.ToolTip = Tools.LangResMan.GetString("floorFinishes_toolTip", Tools.Cult);
             floorButtonData.LargeImage = RetriveImage("RoomFinishes.Resources.FloorFinishesLarge.png");
             floorButtonData.Image = RetriveImage("RoomFinishes.Resources.FloorFinishesSmall.png");
