@@ -124,16 +124,4 @@
   <data name="BIM42HelpFr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BIM42HelpFr.chm;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="FloorFinishesLarge" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FloorFinishesLarge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FloorFinishesSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FloorFinishesSmall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RoomFinishLarge" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RoomFinishLarge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RoomFinishSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RoomFinishSmall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

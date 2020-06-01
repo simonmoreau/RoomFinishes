@@ -155,16 +155,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\RoomFinishLarge.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\RoomFinishSmall.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\FloorFinishesLarge.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\FloorFinishesSmall.png" />
+    <EmbeddedResource Include="Resources\floor-finishes-large.png" />
+    <EmbeddedResource Include="Resources\floor-finishes-small.png" />
+    <EmbeddedResource Include="Resources\room-finishes-large.png" />
+    <EmbeddedResource Include="Resources\room-finishes-small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterClean">
