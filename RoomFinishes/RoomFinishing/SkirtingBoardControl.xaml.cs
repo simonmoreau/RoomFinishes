@@ -152,7 +152,11 @@ namespace RoomFinishes
             {
                 SkirtingBoardSetup.BoardHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
+#if DEBUG || V2022
                 Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), SpecTypeId.Length, SkirtingBoardSetup.BoardHeight, true);
+#else
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, SkirtingBoardSetup.BoardHeight, true, true);
+#endif
             }
             else
             {

@@ -70,7 +70,7 @@ namespace RoomFinishes
             Document document = UIDoc.Document;
 
             FloorsFinishesSetup floorsFinishesSetup = new FloorsFinishesSetup();
-            
+
 
             //Load the selection form
 
@@ -113,7 +113,7 @@ namespace RoomFinishes
                         }
 
                         SpatialElementBoundaryOptions opt = new SpatialElementBoundaryOptions();
-                        
+
 
                         IList<IList<Autodesk.Revit.DB.BoundarySegment>> boundarySegments = room.GetBoundarySegments(opt);
 
@@ -139,9 +139,6 @@ namespace RoomFinishes
                                 curveLoops.Add(curveLoop);
                             }
 
-
-
-
                             //Retrive room info
                             Level rmLevel = document.GetElement(room.LevelId) as Level;
                             Parameter param = room.get_Parameter(BuiltInParameter.ROOM_HEIGHT);
@@ -149,8 +146,12 @@ namespace RoomFinishes
 
                             if (curveArray.Size != 0)
                             {
-                                // Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
+#if DEBUG || V2022 
                                 Floor floor = Floor.Create(document, curveLoops, floorsFinishesSetup.SelectedFloorType.Id, rmLevel.Id);
+#else
+                                Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
+#endif
+
 
                                 //Change some param on the floor
                                 param = floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);

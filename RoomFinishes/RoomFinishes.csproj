@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2022|AnyCPU'">
     <OutputPath>bin\2022\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;V2022</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2021|AnyCPU'">
     <OutputPath>bin\2021\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;V2021</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,7 +53,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2020|AnyCPU'">
     <OutputPath>bin\2020\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;V2020</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -61,7 +61,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2019|AnyCPU'">
     <OutputPath>bin\2019\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;V2019</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -165,8 +165,6 @@
     <None Include="app.config" />
     <None Include="PostBuild.ps1" />
     <None Include="RoomFinishes.addin" />
-    <EmbeddedResource Include="Resources\BIM42HelpEn.chm" />
-    <EmbeddedResource Include="Resources\BIM42HelpFr.chm" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -194,6 +192,16 @@
     <EmbeddedResource Include="Resources\floor-finishes-small.png" />
     <EmbeddedResource Include="Resources\room-finishes-large.png" />
     <EmbeddedResource Include="Resources\room-finishes-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PackageContents.xml" />
+    <Content Include="HelpFile\Resources\appstore-combined.min.css" />
+    <Content Include="HelpFile\Resources\original_40186b10-7026-49a0-af5a-a6753eb6c80a_.png" />
+    <Content Include="HelpFile\Resources\original_8720cb0c-859b-4295-8843-64706c298552_.png" />
+    <Content Include="HelpFile\Resources\original_d6828587-8e9d-4254-a42c-679e9e9930b2_.png" />
+    <Content Include="HelpFile\Resources\resized_03155f57-e3d8-4245-8528-366fe82175f7_.png" />
+    <Content Include="HelpFile\Resources\Room Finishing.ico" />
+    <Content Include="HelpFile\RoomFinishes_Help.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterClean">

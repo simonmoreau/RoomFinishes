@@ -33,8 +33,9 @@ namespace RoomFinishes
         {
             //Check the string value
             string heightValueString = text;
-            double lenght;             
+            double lenght;
 
+#if DEBUG || V2022
             if (Autodesk.Revit.DB.UnitFormatUtils.TryParse(units, SpecTypeId.Length, heightValueString, out lenght))
             {
                 return lenght;
@@ -43,6 +44,17 @@ namespace RoomFinishes
             {
                 return null;
             }
+#else
+            if (Autodesk.Revit.DB.UnitFormatUtils.TryParse(units, UnitType.UT_Length, heightValueString, out lenght))
+            {
+                return lenght;
+            }
+            else
+            {
+                return null;
+            }
+#endif
+
         }
 
 

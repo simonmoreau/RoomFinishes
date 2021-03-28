@@ -71,9 +71,15 @@ namespace RoomFinishes
                 //Get all double parameters
                 Room room = roomList.First() as Room;
 
+#if DEBUG || V2022
+                List<Parameter> doubleParam = (from Parameter p in room.Parameters
+                                               where p.Definition.GetDataType() == SpecTypeId.Length
+                                               select p).ToList();
+#else
                 List<Parameter> doubleParam = (from Parameter p in room.Parameters 
                                                where p.Definition.ParameterType == ParameterType.Length
                                                select p).ToList();
+#endif
 
                 paramSelector.ItemsSource = doubleParam;
                 paramSelector.DisplayMemberPath = "Definition.Name";
@@ -191,7 +197,12 @@ namespace RoomFinishes
             {
                 FloorsFinishesSetup.FloorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
+#if DEBUG || V2022
                 Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), SpecTypeId.Length, FloorsFinishesSetup.FloorHeight, true);
+#else
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, FloorsFinishesSetup.FloorHeight, true, true);
+#endif
+
             }
             else
             {

@@ -59,25 +59,5 @@ namespace RoomFinishes.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] BIM42HelpEn {
-            get {
-                object obj = ResourceManager.GetObject("BIM42HelpEn", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] BIM42HelpFr {
-            get {
-                object obj = ResourceManager.GetObject("BIM42HelpFr", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }
