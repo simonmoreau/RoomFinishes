@@ -84,9 +84,6 @@ namespace RoomFinishes
                 paramSelector.IsEnabled = false;
                 height_param_radio.IsEnabled = false;
             }
-
-            
-
         }
 
         private void Ok_Button_Click(object sender, RoutedEventArgs e)
@@ -194,7 +191,7 @@ namespace RoomFinishes
             {
                 FloorsFinishesSetup.FloorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
-                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, FloorsFinishesSetup.FloorHeight, true, true);
+                Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), SpecTypeId.Length, FloorsFinishesSetup.FloorHeight, true);
             }
             else
             {

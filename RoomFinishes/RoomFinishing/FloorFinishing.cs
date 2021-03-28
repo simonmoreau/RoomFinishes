@@ -118,6 +118,7 @@ namespace RoomFinishes
                         IList<IList<Autodesk.Revit.DB.BoundarySegment>> boundarySegments = room.GetBoundarySegments(opt);
 
                         CurveArray curveArray = new CurveArray();
+                        List<CurveLoop> curveLoops = new List<CurveLoop>();
 
                         if (boundarySegments.Count != 0)
                         {
@@ -125,6 +126,20 @@ namespace RoomFinishes
                             {
                                 curveArray.Append(boundSeg.GetCurve());
                             }
+
+                            foreach (IList<Autodesk.Revit.DB.BoundarySegment> boundSegs in boundarySegments)
+                            {
+                                CurveLoop curveLoop = new CurveLoop();
+
+                                foreach (Autodesk.Revit.DB.BoundarySegment boundSeg in boundSegs)
+                                {
+                                    curveLoop.Append(boundSeg.GetCurve());
+                                }
+
+                                curveLoops.Add(curveLoop);
+                            }
+
+
 
 
                             //Retrive room info
@@ -134,7 +149,8 @@ namespace RoomFinishes
 
                             if (curveArray.Size != 0)
                             {
-                                Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
+                                // Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
+                                Floor floor = Floor.Create(document, curveLoops, floorsFinishesSetup.SelectedFloorType.Id, rmLevel.Id);
 
                                 //Change some param on the floor
                                 param = floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);

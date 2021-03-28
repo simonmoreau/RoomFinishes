@@ -1,14 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RoomFinishingEn|AnyCPU'">
-    <StartProgram>C:\Program Files\Autodesk\Revit 2021\Revit.exe</StartProgram>
-    <StartAction>Program</StartAction>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RoomFinishingFr|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2022|AnyCPU'">
     <StartProgram>C:\Program Files\Autodesk\Revit Preview Release\Revit.exe</StartProgram>
     <StartAction>Program</StartAction>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2021|AnyCPU'">
+    <StartProgram>C:\Program Files\Autodesk\Revit Preview Release\Revit.exe</StartProgram>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2020|AnyCPU'">
+    <StartProgram>C:\Program Files\Autodesk\Revit Preview Release\Revit.exe</StartProgram>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '2019|AnyCPU'">
+    <StartProgram>C:\Program Files\Autodesk\Revit Preview Release\Revit.exe</StartProgram>
+    <StartAction>Program</StartAction>
   </PropertyGroup>
 </Project>
