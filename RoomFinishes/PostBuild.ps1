@@ -65,8 +65,9 @@ Foreach ($version in $revitVersions) {
     $sourceFolder = (get-item $TargetDir).parent.FullName + "\" + $version
 
     if (Test-Path $sourceFolder) { 
-        copy-item ($sourceFolder + "\*.dll") $versionFolder -force -recurse
-        copy-item ($ProjectDir + "HelpFile\*") $versionFolder -force -recurse
+        New-Item -ItemType Directory -Path ($versionFolder + "\RoomFinishes")
+        copy-item ($sourceFolder + "\*.dll") ($versionFolder + "\RoomFinishes") -force -recurse
+        copy-item ($ProjectDir + "HelpFile\*") ($versionFolder + "\RoomFinishes") -force -recurse
         copy-item ($ProjectDir + $TargetName + ".addin") $versionFolder -force -recurse
     }
 }
