@@ -10,6 +10,7 @@ using Autodesk.Revit.DB.Architecture;
 using System.Globalization;
 using System.Resources;
 using RoomFinishes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 #endregion
 
 namespace RoomFinishes
@@ -146,12 +147,13 @@ namespace RoomFinishes
 
                             if (curveArray.Size != 0)
                             {
-#if DEBUG || V2022 
-                                Floor floor = Floor.Create(document, curveLoops, floorsFinishesSetup.SelectedFloorType.Id, rmLevel.Id);
-#else
-                                Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
-#endif
 
+#if Version2022 || Version2023 || Version2024
+                                Floor floor = Floor.Create(document, curveLoops, floorsFinishesSetup.SelectedFloorType.Id, rmLevel.Id);
+
+#elif Version2019 || Version2020 || Version2021
+                            Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
+#endif
 
                                 //Change some param on the floor
                                 param = floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);
