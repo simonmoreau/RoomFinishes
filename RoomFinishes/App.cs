@@ -51,7 +51,9 @@ namespace RoomFinishes
             //Retrive dll path
             string DllPath =  Assembly.GetExecutingAssembly().Location;
 
-            ContextualHelp helpFile = CreateContextualHelp("BIM42Help");
+            string helpPath = "https://witty-river-01a861010.2.azurestaticapps.net/RoomFinishes/RoomFinishes_Help.html";
+            ContextualHelp helpFile = new ContextualHelp(ContextualHelpType.Url, helpPath);
+
 
             //Add RoomsFinishes Button
             string ButtonText = Tools.LangResMan.GetString("roomFinishes_button_name", Tools.Cult);
@@ -75,6 +77,7 @@ namespace RoomFinishes
             SplitButton sbRoom = bim42Panel.AddItem(sbRoomData) as SplitButton;
             sbRoom.AddPushButton(FinishButtonData);
             sbRoom.AddPushButton(floorButtonData);
+            sbRoom.SetContextualHelp(helpFile);
 
         }
 
@@ -98,35 +101,6 @@ namespace RoomFinishes
                     return icoDecoder.Frames[0];
                 default:
                     return null;
-            }
-        }
-
-        private static ContextualHelp CreateContextualHelp(string helpFile)
-        {
-
-            FileInfo dllFileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-
-            string helpFilePath = Path.Combine(dllFileInfo.Directory.FullName, "RoomFinishes_Help.html");
-
-            FileInfo helpFileInfo = new FileInfo(helpFilePath);
-            if (helpFileInfo.Exists)
-            {
-                return new ContextualHelp(ContextualHelpType.Url, helpFilePath);
-            }
-            else
-            {
-                string dirPath = dllFileInfo.Directory.FullName;
-                //Get the english documentation
-                string HelpName = helpFile;
-
-                string HelpPath = Path.Combine(dirPath, HelpName);
-
-                //if the help file does not exist, extract it in the HelpDirectory
-                //Extract the english documentation
-
-                Tools.ExtractRessource("RoomFinishes.Resources.BIM42HelpEn.chm", HelpPath);
-
-                return new ContextualHelp(ContextualHelpType.ChmFile, HelpPath);
             }
         }
     }

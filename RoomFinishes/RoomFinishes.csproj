@@ -23,7 +23,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '2024Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '2024Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\2024Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;Version2024</DefineConstants>
@@ -156,7 +156,7 @@
     <StartAction>Program</StartAction>
   </PropertyGroup>
   <ItemGroup>
-      <!-- 2024 -->
+    <!-- 2024 -->
     <Reference Include="RevitAPI" Condition="'$(Configuration)' == '2024Debug' OR '$(Configuration)' == '2024Release'">
       <HintPath>$(PROGRAMFILES)\Autodesk\Revit Preview Release\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -165,7 +165,7 @@
       <HintPath>$(PROGRAMFILES)\Autodesk\Revit Preview Release\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-      <!-- 2023 -->
+    <!-- 2023 -->
     <Reference Include="RevitAPI" Condition="'$(Configuration)' == '2023Debug' OR '$(Configuration)' == '2023Release'">
       <HintPath>$(PROGRAMFILES)\Autodesk\Revit 2023\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -299,13 +299,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="PackageContents.xml" />
-    <Content Include="HelpFile\Resources\appstore-combined.min.css" />
-    <Content Include="HelpFile\Resources\original_40186b10-7026-49a0-af5a-a6753eb6c80a_.png" />
-    <Content Include="HelpFile\Resources\original_8720cb0c-859b-4295-8843-64706c298552_.png" />
-    <Content Include="HelpFile\Resources\original_d6828587-8e9d-4254-a42c-679e9e9930b2_.png" />
-    <Content Include="HelpFile\Resources\resized_03155f57-e3d8-4245-8528-366fe82175f7_.png" />
-    <Content Include="HelpFile\Resources\Room Finishing.ico" />
-    <Content Include="HelpFile\RoomFinishes_Help.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterClean">
