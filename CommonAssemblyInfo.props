@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <Company>BIM42</Company>
+    <Copyright>BIM42 2025</Copyright>
+    <Description>The Room Finishes Revit plugin</Description>
+    <Product>Room Finishes</Product>
+    <FileVersion>1.26.0.0</FileVersion>
+  </PropertyGroup>
+</Project>
