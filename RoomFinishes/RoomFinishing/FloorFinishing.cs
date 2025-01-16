@@ -148,10 +148,10 @@ namespace RoomFinishes
                             if (curveArray.Size != 0)
                             {
 
-#if Version2022 || Version2023 || Version2024
+#if REVIT2022 || REVIT2023 || REVIT2024 || REVIT2025 || REVIT2026
                                 Floor floor = Floor.Create(document, curveLoops, floorsFinishesSetup.SelectedFloorType.Id, rmLevel.Id);
 
-#elif Version2019 || Version2020 || Version2021
+#elif REVIT2019 || REVIT2020 || REVIT2021
                             Floor floor = document.Create.NewFloor(curveArray, floorsFinishesSetup.SelectedFloorType, rmLevel, false);
 #endif
 

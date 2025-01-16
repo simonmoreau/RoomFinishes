@@ -104,7 +104,7 @@
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2016\RoomFinishes.addin" />
     <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2016\RoomFinishes.dll" />
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>powershell -ExecutionPolicy Unrestricted $(ProjectDir)PostBuild.ps1 -Configuration $(Configuration) -TargetName $(TargetName) -ProjectDir $(ProjectDir) -TargetPath $(TargetPath) -TargetDir $(TargetDir)</PostBuildEvent>
-  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="powershell -ExecutionPolicy Unrestricted $(ProjectDir)PostBuild.ps1 -RevitVersion $(RevitVersion) -TargetName $(TargetName) -ProjectDir $(ProjectDir) -TargetPath $(TargetPath) -TargetDir $(TargetDir)" />
+  </Target>
 </Project>
