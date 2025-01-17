@@ -57,7 +57,7 @@ function SignFiles($TargetDir) {
       -v $filePaths
 }
 
-SignFiles $TargetDir
+# SignFiles $TargetDir
 
 # Copy to Addin folder for debug
 $addinFolder = ($env:APPDATA + "\Autodesk\REVIT\Addins\" + $RevitVersion)
