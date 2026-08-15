@@ -35,7 +35,7 @@ namespace RoomFinishes
             string heightValueString = text;
             double lenght;
 
-#if Version2022 || Version2023 || Version2024
+#if REVIT2022 || REVIT2023 || REVIT2024 || REVIT2025 || REVIT2026
             if (Autodesk.Revit.DB.UnitFormatUtils.TryParse(units, SpecTypeId.Length, heightValueString, out lenght))
             {
                 return lenght;
@@ -45,7 +45,7 @@ namespace RoomFinishes
                 return null;
             }
 
-#elif Version2019 || Version2020 || Version2021
+#elif REVIT2019 || REVIT2020 || REVIT2021
                         if (Autodesk.Revit.DB.UnitFormatUtils.TryParse(units, UnitType.UT_Length, heightValueString, out lenght))
             {
                 return lenght;

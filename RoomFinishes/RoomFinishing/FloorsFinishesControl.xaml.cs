@@ -71,12 +71,12 @@ namespace RoomFinishes
                 //Get all double parameters
                 Room room = roomList.First() as Room;
 
-#if Version2022 || Version2023 || Version2024
+#if REVIT2022 || REVIT2023 || REVIT2024 || REVIT2025 || REVIT2026
                 List<Parameter> doubleParam = (from Parameter p in room.Parameters
                                                where p.Definition.GetDataType() == SpecTypeId.Length
                                                select p).ToList();
 
-#elif Version2019 || Version2020 || Version2021
+#elif REVIT2019 || REVIT2020 || REVIT2021
                 List<Parameter> doubleParam = (from Parameter p in room.Parameters 
                             where p.Definition.ParameterType == ParameterType.Length
                             select p).ToList();
@@ -198,10 +198,10 @@ namespace RoomFinishes
             {
                 FloorsFinishesSetup.FloorHeight = (double)Tools.GetValueFromString(Height_TextBox.Text, _doc.GetUnits());
 
-#if Version2022 || Version2023 || Version2024
+#if REVIT2022 || REVIT2023 || REVIT2024 || REVIT2025 || REVIT2026
                 Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), SpecTypeId.Length, FloorsFinishesSetup.FloorHeight, true);
 
-#elif Version2019 || Version2020 || Version2021
+#elif REVIT2019 || REVIT2020 || REVIT2021
                 Height_TextBox.Text = UnitFormatUtils.Format(_doc.GetUnits(), UnitType.UT_Length, FloorsFinishesSetup.FloorHeight, true, true);
 #endif
 
